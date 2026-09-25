@@ -1,0 +1,18 @@
+{
+  "name": "acme-api",
+  "version": "2.1.0",
+  "description": "Production REST API",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "test": "jest",
+    "deploy": "yarn run build && yarn run start"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "pg": "^8.11.0"
+  }
+}

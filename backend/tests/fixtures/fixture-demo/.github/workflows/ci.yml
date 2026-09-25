@@ -1,0 +1,30 @@
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+name: CI
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Drift 1 continued: CI tests against Node 20 and 22, not 18
+        node-version: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Drift 4: CI uses yarn install but README says npm install
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run tests
+        run: yarn test
