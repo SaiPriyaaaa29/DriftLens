@@ -3,7 +3,7 @@ import cors from 'cors';
 import { analyzeRouter } from './api/analyze.router';
 
 const app = express();
-const PORT = process.env.PORT ?? 3001;
+const PORT = Number(process.env.PORT) || 3001;
 
 app.use(cors());
 app.use(express.json());
@@ -15,8 +15,8 @@ app.get('/api/health', (_req, res) => {
 app.use('/api', analyzeRouter);
 
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`DriftLens backend listening on port ${PORT}`);
+  app.listen(PORT, () => {
+    console.log(`DriftLens backend listening on http://localhost:${PORT}`);
   });
 }
 
