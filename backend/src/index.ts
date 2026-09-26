@@ -15,8 +15,8 @@ app.get('/api/health', (_req, res) => {
 app.use('/api', analyzeRouter);
 
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
-    console.log(`DriftLens backend listening on http://localhost:${PORT}`);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`DriftLens backend listening on port ${PORT}`);
   });
 }
 
