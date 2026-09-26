@@ -15,7 +15,9 @@ export class ApiError extends Error {
  * Throws ApiError for non-200 responses.
  */
 export async function analyzeRepo(repoPath: string): Promise<AnalysisResult> {
-  const res = await fetch('/api/analyze', {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
+
+  const res = await fetch(`${API_BASE_URL}/api/analyze`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ repoPath }),
@@ -23,7 +25,10 @@ export async function analyzeRepo(repoPath: string): Promise<AnalysisResult> {
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({ error: res.statusText }));
-    throw new ApiError(res.status, (body as { error?: string }).error ?? res.statusText);
+    throw new ApiError(
+      res.status,
+      (body as { error?: string }).error ?? res.statusText
+    );
   }
 
   return res.json() as Promise<AnalysisResult>;
