@@ -44,8 +44,8 @@ export async function scanRepository(repoPath: string): Promise<ScanResult> {
     let content: string;
     try {
       content = await fs.readFile(absFile, 'utf-8');
-    } catch {
-      // Unreadable file — skip silently
+    } catch (err) {
+      console.warn(`[scanner] Could not read ${relFile}:`, err);
       continue;
     }
 

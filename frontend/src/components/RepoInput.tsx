@@ -1,7 +1,8 @@
+
 import { useState } from 'react';
 
 interface Props {
-  onAnalyze: (path: string) => void;
+  onAnalyze: (url: string) => void;
   loading: boolean;
 }
 
@@ -17,11 +18,12 @@ export function RepoInput({ onAnalyze, loading }: Props) {
   return (
     <form onSubmit={handleSubmit} className="flex gap-3">
       <input
-        type="text"
+        type="url"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="/absolute/path/to/your/repo"
+        placeholder="https://github.com/owner/repository"
         disabled={loading}
+        required
         className="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 font-mono"
       />
       <button

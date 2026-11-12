@@ -11,23 +11,23 @@ export class ApiError extends Error {
 }
 
 /**
- * Calls POST /api/analyze with the given repository path.
+ * Calls POST /api/analyze with the given public GitHub repository URL.
  * Throws ApiError for non-200 responses.
  */
-export async function analyzeRepo(repoPath: string): Promise<AnalysisResult> {
+export async function analyzeRepo(repoUrl: string): Promise<AnalysisResult> {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
 
   const res = await fetch(`${API_BASE_URL}/api/analyze`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ repoPath }),
+    body: JSON.stringify({ repoUrl }),
   });
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({ error: res.statusText }));
     throw new ApiError(
       res.status,
-      (body as { error?: string }).error ?? res.statusText
+      (body as { error?: string }).error ?? res.statusText,
     );
   }
 
