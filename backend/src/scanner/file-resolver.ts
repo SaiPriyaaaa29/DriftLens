@@ -1,4 +1,3 @@
-
 import { glob } from 'glob';
 import path from 'path';
 
@@ -25,10 +24,34 @@ const SUPPORTED_PATTERNS = [
 ];
 
 /**
+ * Directories that never describe the real project's environment:
+ * dependencies, build output, tests, fixtures and examples.
+ * Keep this list in sync with EXCLUDED_PATH in github-repository.ts.
+ */
+const IGNORED_DIRECTORIES = [
+  'node_modules',
+  '.git',
+  'dist',
+  'build',
+  'vendor',
+  'test',
+  'tests',
+  '__tests__',
+  'fixture',
+  'fixtures',
+  '__fixtures__',
+  'example',
+  'examples',
+];
+
+const IGNORE_GLOBS = IGNORED_DIRECTORIES.map((dir) => `**/${dir}/**`);
+
+/**
  * Returns relative file paths (forward-slash separated) for all supported
  * files found under repoPath, sorted alphabetically.
  *
- * Ignores node_modules and .git directories.
+ * Paths are matched relative to repoPath, so a repository that itself lives
+ * inside a "tests" folder (like the test fixtures) is still scanned.
  */
 export async function resolveFiles(repoPath: string): Promise<string[]> {
   const absoluteRoot = path.resolve(repoPath);
@@ -39,10 +62,7 @@ export async function resolveFiles(repoPath: string): Promise<string[]> {
         cwd: absoluteRoot,
         dot: true,
         nodir: true,
-        ignore: [
-          '**/node_modules/**',
-          '**/.git/**',
-        ],
+        ignore: IGNORE_GLOBS,
       }),
     ),
   );
